@@ -1,0 +1,27 @@
+{
+  "table_entries": [
+
+    {
+      "table": "MyIngress.srv6_transit_table",
+      "match": {
+        "hdr.ipv6.dstAddr": "2001:2::1"
+      },
+      "action_name": "MyIngress.srv6_transit"
+    },
+
+    {
+      "table": "MyIngress.ipv6_forward",
+      "match": {
+        "hdr.ipv6.dstAddr": [
+          "2001:4::1",
+          128
+        ]
+      },
+      "action_name": "MyIngress.set_nhop",
+      "action_params": {
+        "dst_mac": "00:00:00:00:24:04",
+        "port": 2
+      }
+    }
+  ]
+}
