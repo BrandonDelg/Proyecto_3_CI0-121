@@ -39,3 +39,14 @@ struct headers {
 
 struct metadata {
 }
+
+//Enum y constantes
+const bit<128> R2_ADDR = 0x20260000000000000000000000000002; //2026::2
+const bit<128> R3_ADDR = 0x20260000000000000000000000000003; //2026::3
+const bit<128> R4_ADDR = 0x20260000000000000000000000000004; //2026::4
+
+const bit<16> ETHERTYPE_IPV6 = 0x86dd;
+
+const bit<8> IPV6_ROUTING_HEADER = 43;
+const bit<8> SRH_ROUTING_TYPE = 4;
+const bit<8> NO_NEXT_HEADER = 59;
