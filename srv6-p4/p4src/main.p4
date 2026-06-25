@@ -7,6 +7,9 @@
 #include "egress.p4"
 #include "deparser.p4"
 
+control MyVerifyChecksum(inout headers hdr, inout metadata meta) { apply {} }
+control MyComputeChecksum(inout headers hdr, inout metadata meta) { apply {} }
+
 V1Switch(
     MyParser(),
     MyVerifyChecksum(),
