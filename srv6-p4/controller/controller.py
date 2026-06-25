@@ -18,7 +18,6 @@ def program_switch(addr, device, rules):
     for r in rules:
         t = shell.TableEntry(r["table"])
 
-        # ARREGLADO: Si la tabla es LPM, le pasamos el string con formato prefijo /128
         if r["table"] == "MyIngress.ipv6_forward":
             t.match["hdr.ipv6.dstAddr"] = f"{r['match']}/128"
         else:
@@ -41,7 +40,7 @@ def main():
             "table": "MyIngress.srv6_policy",
             "match": "2026::4", 
             "action": "MyIngress.insert_srh_route_a",
-            "params": {"port": "2"}  # Puerto hacia R2
+            "params": {"port": "2"} 
         },
         {
             "table": "MyIngress.ipv6_forward",
@@ -61,7 +60,7 @@ def main():
             "table": "MyIngress.ipv6_forward",
             "match": "2026::4",
             "action": "MyIngress.set_nhop",
-            "params": {"dst_mac": "1e:a1:5c:42:fe:ee", "port": "2"} # Puerto hacia R4
+            "params": {"dst_mac": "1e:a1:5c:42:fe:ee", "port": "2"}
         }
     ])
 
@@ -84,7 +83,7 @@ def main():
             "table": "MyIngress.ipv6_forward",
             "match": "2026::4",
             "action": "MyIngress.set_nhop",
-            "params": {"dst_mac": "aa:bb:cc:dd:ee:ff", "port": "3"} # Puerto hacia Host 2
+            "params": {"dst_mac": "aa:bb:cc:dd:ee:ff", "port": "3"} 
         }
     ])
 

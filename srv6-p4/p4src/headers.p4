@@ -39,7 +39,6 @@ struct headers {
 struct metadata {
 }
 
-// Constantes globales
 const bit<128> R2_ADDR = 0x20260000000000000000000000000002; // 2026::2
 const bit<128> R3_ADDR = 0x20260000000000000000000000000003; // 2026::3
 const bit<128> R4_ADDR = 0x20260000000000000000000000000004; // 2026::4
