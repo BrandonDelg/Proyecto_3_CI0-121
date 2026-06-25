@@ -1,63 +1,50 @@
-control MyIngress(
-    inout headers hdr,
-    inout metadata meta,
-    inout standard_metadata_t standard_metadata)
-{
+action srv6_transit() {
 
-    action srv6_transit() {
-        if (hdr.srh.segments_left > 0) {
+    if (hdr.srh.segments_left > 0) {
 
-            hdr.srh.segments_left =
-                hdr.srh.segments_left - 1;
+        hdr.srh.segments_left =
+            hdr.srh.segments_left - 1;
 
+        if (hdr.srh.segments_left == 0) {
             hdr.ipv6.dstAddr =
-                hdr.segment_list[hdr.srh.segments_left].addr;
+                hdr.segment_list[0].addr;
         }
     }
+}
 
-    action set_nhop(
-        macAddr_t dst_mac,
-        egressSpec_t port)
-    {
-        hdr.ethernet.dstAddr = dst_mac;
+action set_nhop(
+    macAddr_t dst_mac,
+    egressSpec_t port)
+{
+    hdr.ethernet.dstAddr = dst_mac;
+    standard_metadata.egress_spec = port;
+}
 
-        standard_metadata.egress_spec = port;
+table srv6_transit_table {
+
+    key = {
+        hdr.ipv6.dstAddr : exact;
     }
 
-    action drop() {
-        mark_to_drop(standard_metadata);
+    actions = {
+        srv6_transit;
+        NoAction;
     }
 
-    table srv6_transit_table {
+    size = 256;
+}
 
-        key = {
-            hdr.ipv6.dstAddr : exact;
-        }
+table ipv6_forward {
 
-        actions = {
-            srv6_transit;
-            NoAction;
-        }
-
-        size = 256;
+    key = {
+        hdr.ipv6.dstAddr : lpm;
     }
 
-    table ipv6_forward {
-
-        key = {
-            hdr.ipv6.dstAddr : lpm;
-        }
-
-        actions = {
-            set_nhop;
-            drop;
-        }
-
-        size = 1024;
+    actions = {
+        set_nhop;
+        drop;
+        NoAction;
     }
 
-    apply {
-        srv6_transit_table.apply();
-        ipv6_forward.apply();
-    }
+    size = 1024;
 }

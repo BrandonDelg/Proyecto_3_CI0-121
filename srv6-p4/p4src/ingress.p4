@@ -77,10 +77,15 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
         size = 1024;
         default_action = NoAction();
     }
-
+    #include "transit.p4"
     apply {
         if (hdr.ipv6.isValid()) {
             srv6_policy.apply();
+            if (hdr.srh.isValid()) {
+                srv6_transit_table.apply();
+            }
+
+            ipv6_forward.apply();
         }
     }
 }
