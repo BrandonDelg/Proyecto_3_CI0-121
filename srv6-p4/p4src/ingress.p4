@@ -17,6 +17,8 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
         hdr.srh.flags = 0;
         hdr.srh.tag = 0;
 
+        hdr.ipv6.payloadLen = hdr.ipv6.payloadLen + 40;
+
         hdr.segment_list[0].addr = R4_ADDR;
         hdr.segment_list[1].addr = R2_ADDR;
 
@@ -38,6 +40,8 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
         hdr.srh.last_entry = 1;
         hdr.srh.flags = 0;
         hdr.srh.tag = 0;
+
+        hdr.ipv6.payloadLen = hdr.ipv6.payloadLen + 40;
 
         hdr.segment_list[0].addr = R4_ADDR;
         hdr.segment_list[1].addr = R3_ADDR;

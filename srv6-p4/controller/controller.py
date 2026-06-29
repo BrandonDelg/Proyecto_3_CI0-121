@@ -127,12 +127,13 @@ def main():
     instalar_reglas("127.0.0.1:50054", 4, [
     {
         "table": "MyEgress.srv6_egress_table",
-        "match": H2_ADDR,
+        "match": R4_ADDR,
         "action": "MyEgress.srv6_egress_decap",
+        "params": {"final_dst": H2_ADDR}
     },
     {
         "table": "MyIngress.ipv6_forward",
-        "match": H2_ADDR,
+        "match": R4_ADDR,
         "action": "MyIngress.set_nhop",
         "params": {"dst_mac": MAC_H2, "port": "3"}
     },
