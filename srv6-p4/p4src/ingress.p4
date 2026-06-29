@@ -13,6 +13,9 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
         hdr.srh.hdr_ext_len = 4;
         hdr.srh.routing_type = SRH_ROUTING_TYPE;
         hdr.srh.segments_left = 1;
+        hdr.srh.last_entry = 1;
+        hdr.srh.flags = 0;
+        hdr.srh.tag = 0;
 
         hdr.segment_list[0].addr = R4_ADDR;
         hdr.segment_list[1].addr = R2_ADDR;
@@ -32,6 +35,9 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
         hdr.srh.hdr_ext_len = 4;
         hdr.srh.routing_type = SRH_ROUTING_TYPE;
         hdr.srh.segments_left = 1;
+        hdr.srh.last_entry = 1;
+        hdr.srh.flags = 0;
+        hdr.srh.tag = 0;
 
         hdr.segment_list[0].addr = R4_ADDR;
         hdr.segment_list[1].addr = R3_ADDR;
@@ -59,16 +65,14 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
     #include "transit.p4"
 
     apply {
-        if (hdr.ipv6.isValid()) {
-            if (!hdr.srh.isValid()) {
-                srv6_policy.apply();
-            }
-            
-            if (hdr.srh.isValid()) {
-                srv6_transit_table.apply();
-            }
-
-            ipv6_forward.apply();
+    if (hdr.ipv6.isValid()) {
+        if (!hdr.srh.isValid()) {
+            srv6_policy.apply();
+        } else {
+            srv6_transit_table.apply();
         }
+
+        ipv6_forward.apply();
     }
+}
 }
