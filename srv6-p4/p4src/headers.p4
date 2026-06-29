@@ -19,10 +19,13 @@ header ipv6_t {
 }
 
 header srh_t {
-    bit<8> next_header;
-    bit<8> hdr_ext_len;
-    bit<8> routing_type;
-    bit<8> segments_left;
+    bit<8>  next_header;
+    bit<8>  hdr_ext_len;
+    bit<8>  routing_type;
+    bit<8>  segments_left;
+    bit<8>  last_entry;
+    bit<8>  flags;
+    bit<16> tag;
 }
 
 header segment_t {
