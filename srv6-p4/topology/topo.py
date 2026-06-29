@@ -69,6 +69,18 @@ class SRv6Topo(Topo):
             addr2='00:00:00:00:00:42'
         )
 
+def setup_hosts(net):
+    h1 = net.get('h1')
+    h2 = net.get('h2')
+
+    # IPv6 addresses
+    h1.cmd('ip -6 addr add 2026::11/64 dev h1-eth0')
+    h2.cmd('ip -6 addr add 2026::42/64 dev h2-eth0')
+
+    h1.cmd('ip -6 neigh replace 2026::42 lladdr 00:00:00:00:01:01 dev h1-eth0')
+    h2.cmd('ip -6 neigh replace 2026::11 lladdr 00:00:00:00:04:42 dev h2-eth0')
+
+
 if __name__ == '__main__':
     setLogLevel('info')
     topo = SRv6Topo()
@@ -76,6 +88,9 @@ if __name__ == '__main__':
     net.start()
 
     print("*** Topologia SRv6 levantada con MAC fijas ***")
+
+    setup_hosts(net)
+
     time.sleep(2)
 
     CLI(net)
